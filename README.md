@@ -28,9 +28,3 @@ Pada gambar **Simulating slow subscriber**, grafik queued messages sempat naik s
 Pada gambar **Running at least three subscribers**, spike queue lebih cepat turun ke 0. Walaupun setiap subscriber tetap membutuhkan sekitar 1 detik untuk memproses satu message, sekarang ada beberapa consumer yang aktif pada queue yang sama. RabbitMQ dapat mendistribusikan message ke beberapa subscriber, sehingga proses konsumsi berjalan paralel. Dengan 3 subscriber, beberapa message bisa diproses pada waktu yang sama, bukan menunggu satu subscriber menyelesaikan semuanya sendiri.
 
 Dari sisi kode, improvement yang terlihat adalah menjalankan lebih banyak subscriber untuk meningkatkan throughput consumer. Publisher tetap mengirim 5 message per run, tetapi kapasitas pemrosesan di sisi subscriber meningkat karena ada lebih banyak worker yang mengambil message dari RabbitMQ. Ini menjelaskan mengapa spike pada grafik kedua lebih cepat berkurang dibandingkan grafik pertama.
-
-Beberapa hal yang juga bisa diperbaiki pada kode:
-- Pada publisher, handler tidak diperlukan karena publisher hanya bertugas mengirim event, bukan menerima event.
-- Pada subscriber, nama variabel delay sebaiknya dibuat jelas, misalnya `processing_delay`, karena nilainya 1000 ms atau 1 detik.
-- Hasil dari `publish_event` dan `listen` sebaiknya tidak diabaikan, supaya error koneksi atau publish bisa terlihat saat program dijalankan.
-- Loop kosong di subscriber sebaiknya diganti dengan mekanisme idle seperti `thread::park()` agar program tetap hidup tanpa membuang CPU.
