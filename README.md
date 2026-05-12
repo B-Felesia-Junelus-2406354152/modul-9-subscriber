@@ -10,3 +10,10 @@
     - 5672 adalah port default AMQP yang digunakan RabbitMQ untuk menerima koneksi dari aplikasi.  
 
     Jadi, kode tersebut berarti: program subscriber mencoba terhubung ke RabbitMQ di komputer lokal melalui port 5672, menggunakan username guest dan password guest. Setelah berhasil terhubung, subscriber akan mendengarkan queue/event user_created.
+
+
+### **Simulating slow subscriber**
+![Simulating slow subscriber](img/simulating-slow-subscriber.png)
+Graf pada RabbitMQ menunjukkan angka 6 karena pada rentang waktu tersebut pernah ada 6 pesan yang masuk/menunggu di queue.
+Pada program publisher, setiap kali dijalankan, program mengirim 5 pesan ke message broker. Jika grafik menunjukkan angka 6, kemungkinan ada 1 pesan lama yang masih tersisa di queue dari eksekusi sebelumnya, lalu ditambah 5 pesan baru dari publisher.
+
